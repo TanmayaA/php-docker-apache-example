@@ -1,0 +1,24 @@
+services:
+
+  # What to call the service hosting the site.
+  php:
+
+    # Use PHP 7.1 with Apache
+    image: tugboatqa/php:7.1-apache
+
+    # Set this as the default service. This does a few things
+    #   1. Clones the git repository into the service container
+    #   2. Exposes port 80 to the Tugboat HTTP proxy
+    #   3. Routes requests to the preview URL to this service
+    default: true
+
+    # A set of commands to run while building this service
+    commands:
+
+      # Commands that set up the basic preview infrastructure
+      init:
+
+        # Link the document root to the expected path. Tugboat uses /docroot
+        # by default. So, if the application is located at any other path in your git
+        # repository, change that here. This example links /web to the docroot
+        - ln -snf "${TUGBOAT_ROOT}/myapp" "${DOCROOT}"
